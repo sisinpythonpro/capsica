@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:155 }}
+    {% else %}
+        Welcome to ABC
+    {% endif %}
+{% endblock %}
+{% block title %}
+   {% if category %}
+        {{ category.name }}
+    {% else %}
+        see our collections
+    {% endif %}
+{% endblock %}
+{% block content %}
+{% if category %}
+    <div class="my_row_class">
+        <div class="mx_auto" >
+            <p> <a href="{% url 'shopapp:All_Prod_Cat' %}">Our Products</a></p>
+        </div>
+    </div>
+
+    {% endif %}
+<div class="mx_auto">
+    {% if category %}
+        <img src="{{category.img.url}}" alt="{{category.name}}" height="200" width="1115">
+
+</div>
+    <br>
+<div>
+        <h1 class="text-center my_title">{{category.name}}</h1>
+        <p class="text-justify">{{category.desc}}</p>
+</div>
+
+
+    {% else %}
+<div>
+<img class="my_image my_image_padding" src="{% static 'img/cbanner.jpg' %}" alt="Our products" height="400" width="1400">
+
+</div>
+<br>
+<div>
+        <h1 class="text-center my_title">Our Products</h1>
+        <p class="text-justify">Our food products are prepared using world class technology in the state of the art factory making it shelf-stable at room temperature for up to 2 years. We are exporting our products across the world.</p>
+</div>
+    {% endif %}
+
+
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4  xol-lg-4" >
+            <div class="card text-center" style="min-width:18rem;">
+            <a href="{{product.get_url}}"><img class="card-img-top" src="{{product.img.url}}" alt="{{product.name}}" height="250" width="250"></a>
+            <div class="card-body">
+                <h4>{{product.name}}</h4>
+                <p>Rs.{{product.price}}</p>
+
+            </div>
+                </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %}> active {% endif %}">{{pg}}</a>
+            {% endfor %}
+
+        </div>
+        {% endif %}
+
+    </div>
+    <br>
+
+</div>
+{% endblock %}
+
+
+
+
+
